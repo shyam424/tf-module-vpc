@@ -40,6 +40,7 @@ resource "aws_nat_gateway" "example" {
   subnet_id                 = each.value["id"]
 }
 
+#Nat gateways are creating and pulling the elastic IPs from the above
 
 output "subnets" {
   value = module.subnets
