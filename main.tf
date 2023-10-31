@@ -48,7 +48,7 @@ resource "aws_route" "ngw" {
   count                     = local.private_route_table_ids
   route_table_id            = element(local.private_route_table_ids, count.index)
   destination_cidr_block    = "0.0.0.0/0"
-  gateway_id                = element(aws_nat_gateway.ngw.*.id, count.index)
+  nat_gateway_id                = element(aws_nat_gateway.ngw.*.id, count.index)
 }
 
 output "subnets" {
