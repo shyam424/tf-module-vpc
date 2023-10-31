@@ -25,7 +25,20 @@ resource "aws_route" "igw" {
   gateway_id                = aws_internet_gateway.igw.id
 }
 
-# adding internet gate way to the public subnets only
+# adding internet gate way to the public subnets only (we have 2 public subnets)
+
+resource "aws_eip" "ngw"  {
+  for_each = lookup(lookup(module.subnets, "public", null), "subnet_ids", null)
+  domain = "vpc"
+}
+
+# nat gate ways will have elastic IPs which are creating above
+
+resource "aws_nat_gateway" "example" {
+  for_each                  = lookup (lookup(module.subnets, "public", null), "subnet_ids" , null)
+  allocation_id             = lookup(aws_eip, each.value["id"], null)
+  subnet_id                 = each.value["id"]
+}
 
 
 output "subnets" {
