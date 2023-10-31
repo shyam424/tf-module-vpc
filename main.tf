@@ -17,3 +17,11 @@ resource "aws_internet_gateway" "gw" {
     Name = "main"
   }
 }
+
+output "subnets" {
+  value = module.subnets
+}
+
+
+#outputs.tf which was created in the subnets module will be pulled here and this will be sent to the root module which is roboshop-vpc(main.tfc).
+#thisis called data transmitting
