@@ -84,3 +84,6 @@ output "subnets" {
 
 #outputs.tf which was created in the subnets module will be pulled here and this will be sent to the root module which is roboshop-vpc(main.tfc).
 #thisis called data transmitting
+--------------------------------------------------------------------------------
+#network connection is completed here
+#now we can create instances and allow-all security groups
