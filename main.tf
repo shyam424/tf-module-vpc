@@ -76,14 +76,35 @@ resource "aws_route" "default-vpc-peer-entry" {
   vpc_peering_connection_id = aws_vpc_peering_connection.peering.id
 }
 
-
-output "subnets" {
-  value = module.subnets
-}
-
-
 #outputs.tf which was created in the subnets module will be pulled here and this will be sent to the root module which is roboshop-vpc(main.tfc).
 #thisis called data transmitting
---------------------------------------------------------------------------------
+#Creating security group below
+
+resource "aws_security_group" "allow_tls" {
+  name        = "allow_tls"
+  description = "Allow TLS inbound traffic"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description      = "TLS from VPC"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+      }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "allow_tls"
+  }
+}
 #network connection is completed here
-#now we can create instances and allow-all security groups
+
+#now the target is -if you create any instance then it should have only private IP address and only workstation will be able to access that
